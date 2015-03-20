@@ -53,8 +53,8 @@ func main() {
 
 				newContents := strings.Join(newRows, "\n")
 
-				fmt.Println(newContents);
-			
+				fmt.Println(newContents)
+
 				err = ioutil.WriteFile(hostsPath, []byte(newContents), 0x644)
 				if err != nil {
 					log.Fatal(err)
