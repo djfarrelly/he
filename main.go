@@ -2,16 +2,13 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
-	"strings"
 
 	"github.com/codegangsta/cli"
+	"github.com/djfarrelly/he/hosts"
 )
-
-var hostsPath = "/etc/hosts"
 
 func main() {
 
@@ -34,31 +31,19 @@ func main() {
 
 				fmt.Printf("adding entry \"%s %s\"\n", ip, hostname)
 
-				file, err := ioutil.ReadFile(hostsPath)
+				err := hosts.Add(ip, hostname)
 				if err != nil {
 					log.Fatal(err)
 				}
 
-				contents := string(file)
-				rows := strings.Split(contents, "\n")
+			},
+		},
+		{
+			Name:  "rm",
+			Usage: "remove an entry",
+			Action: func(c *cli.Context) {
 
-				// for idx, element := range rows {
-				// 	if idx < 10 {
-				// 		fmt.Println(element)
-				// 	}
-				// }
-
-				newLine := fmt.Sprintf("%s %s #he-added-this\n", ip, hostname)
-				newRows := append(rows, newLine)
-
-				newContents := strings.Join(newRows, "\n")
-
-				fmt.Println(newContents)
-
-				err = ioutil.WriteFile(hostsPath, []byte(newContents), 0x644)
-				if err != nil {
-					log.Fatal(err)
-				}
+				fmt.Printf("removing entry \"%s %s\"\n")
 
 			},
 		},
